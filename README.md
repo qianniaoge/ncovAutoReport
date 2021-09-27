@@ -3,7 +3,7 @@
 
 ## 0x00 使用方法
 
-### 1. 部署到VPS
+### 1. 下载到本地
 
 ```bash
 # git clone https://github.com/FanqXu/ncovAutoReport
@@ -19,22 +19,24 @@
 
 ```bash
 # cd ncovAutoReport && cat conf.ini
-92a3c5441023a43bvf5084f5#Fanq#SCU74835Fe67ee5e78c32d9e56e7dc68ebad908vc5e9e8cb7a97cc
+92a3c5441023a43bvf5084f5:Fanq:SCU74835Fe67ee5e78c32d9e56e7dc68ebad908vc5e9e8cb7a97cc
 ```
 
-以`#`分为三段，第一段为`92a3c5441023a43bvf5084f5`是个人「易统计」账号的token，有了这个token才可以打卡；第二段`Fanq`是名字，随便取；第三段`SCU74835Fe67ee5e78c32d9e56e7dc68ebad908vc5e9e8cb7a97cc`为个人Server酱的Key，是用于推送至WeChat的。
+以`:`分为三段，第一段为`92a3c5441023a43bvf5084f5`是个人「易统计」账号的token，有了这个token才可以打卡；第二段`Fanq`是名字，随便取；第三段`SCU74835Fe67ee5e78c32d9e56e7dc68ebad908vc5e9e8cb7a97cc`为个人Server酱的Key，是用于推送至WeChat的。
+
+![token](./imgs/token.png)
 
 其中token和名字必须要有，而用于推送至WeChat的Server酱的key可有可无。
 
-如下格式（表明Htz同学没有Server酱的key）也都行：
+如下格式（表明Hz同学没有Server酱的key）也都行：
 
 ```bash
 $ cat conf.ini
-92a3c5441023a43bvf5084f5#Fanq#SCU74835Fe67ee5e78c32d9e56e7dc68ebad908vc5e9e8cb7a97cc
-a2a3c5441023a43bvf5084f5#Htz#
+92a3c54410g3a43bvf5584f5:Fanq:SCU74835Fe67ee5e78c32d9e56e7dc68ebad908vc5e9e8cb7a97cc
+a2a3c52410s3a43bvf5084f5:Hz:
 ```
 
-### 4. Server酱配置
+### 4. Server酱配置（可选）
 
 - https://sc.ftqq.com/3.version
 
@@ -60,7 +62,13 @@ a2a3c5441023a43bvf5084f5#Htz#
         push = requests.post(reqUrl, data=payload)
 ```
 
-### 5. 自动化
+### 5. 手动运行
+
+```bash
+# python3 report.py
+```
+
+### 6. 自动化
 
 使用Linux定时任务：
 
@@ -77,7 +85,7 @@ a2a3c5441023a43bvf5084f5#Htz#
 00 9 * * * python3 /root/ncovAutoReport/report.py
 ```
 
-每天的早上九点执行`python3 /root/ncovAutoReport/report.py`这条命令。
+每天早上九点自动执行`python3 /root/ncovAutoReport/report.py`这条命令。
 
 ## 0x01 注意事项
 
@@ -89,15 +97,15 @@ a2a3c5441023a43bvf5084f5#Htz#
 
 ### 2. 打卡失败
 
-如下图表明打卡失败，原因可能是超过三天未登录「易统计」小程序，token未刷新。请登录小程序，顺便手动打一下卡。
+如下图表明打卡失败，原因可能是超过十天未登录「易统计」小程序，token临时失效。请登录小程序，顺便手动打一下卡。
 
 <img src = 'https://s3.ax1x.com/2020/11/23/DYstE9.png' width="70%"/>
 
 ### 3. 已知问题
 
-大约三天不登录上去看看账号就会过期，请求`https://www.ioteams.com/ncov/api/users/last-report`这个接口就会报403。
+大约十天不登录一次，token就会临时失效，请求`https://www.ioteams.com/ncov/api/users/last-report`这个接口就会报403。
 
-所以目前是要求大约每2/3天需要登录一次打卡平台！（打开「易统计」微信小程序即可）
+所以目前是要求大约每十天需要登录一次！（打开「易统计」微信小程序即可）
 
 另外这个程序是以请求上次打卡（昨天）提交的信息，来作为这一次（今天）所需要提交的信息。
 

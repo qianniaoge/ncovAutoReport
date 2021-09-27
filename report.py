@@ -10,6 +10,7 @@ import time
 class NcovReport:
     def __init__(self, token, keys=None):
         self.headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.110 Safari/537.36",
             "Content-Type": "application/json;charset=utf-8",
             "ncov-access-token": token
         }
@@ -23,7 +24,7 @@ class NcovReport:
             if keys is not None:
                 self.sendMsg("今日打卡失败，请登录小程序打卡")
         else:
-            reportStatus =  self.dailyReport() 
+            reportStatus = self.dailyReport()
             if keys is not None:
                 self.sendMsg(reportStatus)
 
@@ -44,7 +45,7 @@ class NcovReport:
                 return e
             else:
                 unneceInfo = ["_id", "user", "company",
-                               "created_at", "updated_at", "__v"]
+                              "created_at", "updated_at", "__v"]
                 for i in unneceInfo:
                     req.pop(i, None)
                 return req
@@ -107,9 +108,9 @@ class NcovReport:
 
 if __name__ == '__main__':
     usersInfo = open('./conf.ini',
-                      encoding='UTF-8').read().split()
+                     encoding='UTF-8').read().split()
     for info in usersInfo:
-        spread = info.split('#')
+        spread = info.split(':')
         print(spread[1], end=',')
         if spread[2] == '':
             NcovReport(spread[0])
